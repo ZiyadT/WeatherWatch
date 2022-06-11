@@ -1,25 +1,50 @@
-import logo from './logo.svg';
+import React, {Component} from 'react'
+import { Route, Routes, Navigate } from 'react-router-dom';
+import Cities from './JSON_Data/city.list.json'
+import AuthPage from './pages/AuthPage';
+import Dashboard from './pages/Dashboard';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  state = {
+    user: null
+  }
+
+  setUserInState = (incomingUserData) => {
+    this.setState({user: incomingUserData})
+  }
+  
+  componentDidMount() {
+    let token = localStorage.getItem('token')
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      if (payload.exp < Date.now() / 1000) {
+        localStorage.removeItem('token')
+        token = null
+      } else {
+        this.setState({ user: payload.user })
+      }
+      console.log(payload)
+    }
+  }
+
+  render() {
+    return (
+      <div className="App">
+        {this.state.user ?
+          <Dashboard />
+        :
+          <AuthPage setUserInState={this.setUserInState}/>
+        }
+      </div>
+    )
+  }
 }
 
-export default App;
+
+
+  // getCities =  async () =>{
+  //   Cities.map(city => {
+  //     console.log(city)
+  //   })
+  // }
