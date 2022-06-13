@@ -19,22 +19,16 @@ export default class SignUpForm extends Component {
   handleSubmit = async (evt) => {
     evt.preventDefault();
     try {
-      // POST user data to server
       const fetchResponse = await fetch('/api/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: this.state.name, email: this.state.email, password: this.state.password })
       })
-      // Check fetchResponse before moving on
       if(!fetchResponse.ok) throw new Error('Fetch Failed - Bad Request ' + fetchResponse.status)
-      
-      // Decode fetch response (resolve) to get jwt
+    
       let token = await fetchResponse.json()
-
-      // Stick token in storage
       localStorage.setItem('token', token)
 
-      // Grab user doc from token and save to state
       const userDoc = JSON.parse(atob(token.split('.')[1])).user
       this.props.setUserInState(userDoc)
     } catch (err) {
@@ -46,8 +40,8 @@ export default class SignUpForm extends Component {
   render() {
     const disable = this.state.password !== this.state.confirm;
     return (
-      <div className='w-1/2 my-24 mx-auto flex justify-between'>
-        <h1 className='ml-auto my-auto text-9xl'>🌤️</h1>
+      <div className='w-1/2 my-24 mx-auto flex justify-between h-full'>
+        <h1 className='ml-auto my-auto text-9xl pb-12'>🌤️</h1>
         <div className="my-48 mr-auto w-80">
           <form autoComplete="off" onSubmit={this.handleSubmit}>
             <div className='my-3 flex justify-between'>
@@ -68,8 +62,8 @@ export default class SignUpForm extends Component {
             </div>
             <button className='text-lg text-slate-300 font-semibold hover:text-orange-300' type="submit" disabled={disable}>SIGN UP</button>
           </form>
+          <p className="error-message text-rose-500 font-semibold text-lg">&nbsp;{this.state.error}</p>
         </div>
-        <p className="error-message">&nbsp;{this.state.error}</p>
       </div>
     );
   }

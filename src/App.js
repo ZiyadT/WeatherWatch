@@ -32,7 +32,7 @@ export default class App extends Component {
     return (
       <div className="App">
         {this.state.user ?
-          <Dashboard />
+          <Dashboard setUserInState={this.setUserInState}/>
         :
           <AuthPage setUserInState={this.setUserInState}/>
         }

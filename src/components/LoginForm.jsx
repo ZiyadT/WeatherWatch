@@ -40,7 +40,7 @@ export default class SignUpForm extends Component {
 
   render() {
     return (
-      <div className='w-1/2 my-24 mx-auto flex justify-between'>
+      <div className='w-1/2 my-24 mx-auto flex justify-between bg-transparent'>
         <h1 className='ml-auto my-auto text-9xl'>☀️</h1>
         <div className="my-48 mr-auto w-80" onSubmit={this.handleSubmit}>
           <form autoComplete="off">
