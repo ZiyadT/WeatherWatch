@@ -24,7 +24,6 @@ export default class App extends Component {
       } else {
         this.setState({ user: payload.user })
       }
-      console.log(payload)
     }
   }
 
