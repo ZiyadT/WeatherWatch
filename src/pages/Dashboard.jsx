@@ -12,19 +12,78 @@ export default class Dashboard extends Component {
         cards: []
     }
 
-    addCard = () => {
-        let curCards = this.state.cards
-        if (!curCards.includes(this.state.currentCity))
-            curCards.push(this.state.currentCity)
-        this.setState({cards: curCards, currentCity: null})
+    async componentDidMount() {
+        try {
+            let jwt = localStorage.getItem('token')
+            let fetchCoordsResponse = await fetch("/api/cities/get", {
+                method: "GET",
+                headers: { "Content-Type": "application/json", "Authorization": 'Bearer: ' + jwt }
+            })
+            let coords = await fetchCoordsResponse.json()
+            for (let i = 0; i < coords.length; i++){
+                const fetchResponse = await fetch('/api/cities/coord_search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', "Authorization": 'Bearer: ' + jwt },
+                    body: JSON.stringify({lat: coords[i].lat, lon: coords[i].lon})
+                  })
+                if(!fetchResponse.ok) throw new Error('Fetch Failed - Bad Request ' + fetchResponse.status)
+                const data = await fetchResponse.json()
+                const data_parsed = JSON.parse(data)
+                let displayCards = this.state.cards
+                displayCards.push(data_parsed)
+                this.setState({cards: displayCards})
+            }
+          } catch (err) {
+            console.error("ERROR:", err)
+          }
     }
 
-    delCard = (card) => {
-        let curCards = this.state.cards
-        const index = curCards.indexOf(card)
-        curCards.splice(index, 1)
-        this.setState({cards: curCards})
+    addCard = async () => {
+        try {
+            let jwt = localStorage.getItem('token')
+            let fetchResponse = await fetch("/api/cities/create", {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Authorization": 'Bearer: ' + jwt },
+              body: JSON.stringify({ city: this.state.currentCity })
+            });
+            let serverResponse = await fetchResponse.json()
+            console.log("Success:", serverResponse)
+            let displayCards = this.state.cards
+            displayCards.push(this.state.currentCity)
+            this.setState({ currentCity: null, cards: displayCards })
+        } catch (err) {
+            console.error("Error:", err)
+        }
+    };
+
+    // let curCards = this.state.cards
+        // if (!curCards.includes(this.state.currentCity))
+        //     curCards.push(this.state.currentCity)
+        // this.setState({cards: curCards, currentCity: null})
+
+    delCard = async(card) => {
+        try {
+            let jwt = localStorage.getItem('token')
+            let fetchResponse = await fetch("/api/cities/del", {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Authorization": 'Bearer: ' + jwt },
+              body: JSON.stringify({ city: card })
+            });
+            let serverResponse = await fetchResponse.json()
+            console.log("Success:", serverResponse)
+            let displayCards = this.state.cards
+            let index = displayCards.indexOf(card)
+            displayCards.splice(index, 1)
+            this.setState({ cards: displayCards })
+        } catch (err) {
+            console.error("Error:", err)
+        }
     }
+
+    // let curCards = this.state.cards
+        // const index = curCards.indexOf(card)
+        // curCards.splice(index, 1)
+        // this.setState({cards: curCards})
 
     nullCity = () => {
         this.setState({currentCity: null})
@@ -36,9 +95,10 @@ export default class Dashboard extends Component {
 
     citySearch = async (e) => {
         e.preventDefault()
+        let jwt = localStorage.getItem('token')
         const fetchResponse = await fetch('/api/cities/city_search', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": 'Bearer: ' + jwt },
             body: JSON.stringify({name: this.state.searchCity})
           })
         if(!fetchResponse.ok) throw new Error('Fetch Failed - Bad Request ' + fetchResponse.status)
@@ -49,9 +109,10 @@ export default class Dashboard extends Component {
 
     coordSearch = async (e) => {
         e.preventDefault()
+        let jwt = localStorage.getItem('token')
         const fetchResponse = await fetch('/api/cities/coord_search', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', "Authorization": 'Bearer: ' + jwt },
             body: JSON.stringify({lat: this.state.latitude, lon: this.state.longitude})
           })
         if(!fetchResponse.ok) throw new Error('Fetch Failed - Bad Request ' + fetchResponse.status)
@@ -82,7 +143,7 @@ export default class Dashboard extends Component {
                     <div id="overlay" className={this.state.currentCity ? "block" : "hidden"}>
                         <div id="inner-overlay" className="bg-amber-300">
                             <div className="flex justify-between">
-                                <p className="mt-10 mx-10 text-4xl font-bold">{this.state.currentCity ? this.state.currentCity.name + ', ' + this.state.currentCity.sys.country : ''}</p>
+                                <p className="mt-10 mx-10 text-4xl font-bold">{this.state.currentCity ? (this.state.currentCity.name ? this.state.currentCity.name + ', ' + this.state.currentCity.sys.country : "Unnamed") : ''}</p>
                                 <p className="mt-10 mx-10 text-4xl font-bold">{this.state.currentCity ? Math.round((this.state.currentCity.main.temp*100 - 27315)/100) : ''}°C</p>
                             </div>
                             <div className="flex justify-between">
