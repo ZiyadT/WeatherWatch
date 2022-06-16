@@ -8,12 +8,15 @@ export default class Dashboard extends Component {
         searchCity: '',
         latitude: '',
         longitude: '',
+        cityError: false,
+        coordError: false,
         currentCity: null,
         cards: []
     }
 
     async componentDidMount() {
         try {
+            let displayCards = this.state.cards
             let jwt = localStorage.getItem('token')
             let fetchCoordsResponse = await fetch("/api/cities/get", {
                 method: "GET",
@@ -29,10 +32,10 @@ export default class Dashboard extends Component {
                 if(!fetchResponse.ok) throw new Error('Fetch Failed - Bad Request ' + fetchResponse.status)
                 const data = await fetchResponse.json()
                 const data_parsed = JSON.parse(data)
-                let displayCards = this.state.cards
+                data_parsed.mongoId = coords[i]._id
                 displayCards.push(data_parsed)
-                this.setState({cards: displayCards})
             }
+            this.setState({cards: displayCards})
           } catch (err) {
             console.error("ERROR:", err)
           }
@@ -48,13 +51,16 @@ export default class Dashboard extends Component {
             });
             let serverResponse = await fetchResponse.json()
             console.log("Success:", serverResponse)
+            let cur = this.state.currentCity
+            cur.mongoId = serverResponse._id
             let displayCards = this.state.cards
-            displayCards.push(this.state.currentCity)
+            displayCards.push(cur)
+            console.log(cur)
             this.setState({ currentCity: null, cards: displayCards })
         } catch (err) {
             console.error("Error:", err)
         }
-    };
+    }
 
     // let curCards = this.state.cards
         // if (!curCards.includes(this.state.currentCity))
@@ -63,9 +69,10 @@ export default class Dashboard extends Component {
 
     delCard = async(card) => {
         try {
+            console.log(card)
             let jwt = localStorage.getItem('token')
             let fetchResponse = await fetch("/api/cities/del", {
-              method: "POST",
+              method: "DELETE",
               headers: { "Content-Type": "application/json", "Authorization": 'Bearer: ' + jwt },
               body: JSON.stringify({ city: card })
             });
@@ -101,10 +108,15 @@ export default class Dashboard extends Component {
             headers: { 'Content-Type': 'application/json', "Authorization": 'Bearer: ' + jwt },
             body: JSON.stringify({name: this.state.searchCity})
           })
-        if(!fetchResponse.ok) throw new Error('Fetch Failed - Bad Request ' + fetchResponse.status)
-        const data = await fetchResponse.json()
-        const data_parsed = JSON.parse(data)
-        this.setState({currentCity: data_parsed})
+        if(!fetchResponse.ok){
+            this.setState({ cityError: true})
+        }
+        else{
+            const data = await fetchResponse.json()
+            const data_parsed = JSON.parse(data)
+            this.setState({currentCity: data_parsed, cityError: false})
+        } 
+        
     }
 
     coordSearch = async (e) => {
@@ -115,10 +127,14 @@ export default class Dashboard extends Component {
             headers: { 'Content-Type': 'application/json', "Authorization": 'Bearer: ' + jwt },
             body: JSON.stringify({lat: this.state.latitude, lon: this.state.longitude})
           })
-        if(!fetchResponse.ok) throw new Error('Fetch Failed - Bad Request ' + fetchResponse.status)
-        const data = await fetchResponse.json()
-        const data_parsed = JSON.parse(data)
-        this.setState({currentCity: data_parsed})
+        if(!fetchResponse.ok){
+            this.setState({ coordError: true})
+        }
+        else{
+            const data = await fetchResponse.json()
+            const data_parsed = JSON.parse(data)
+            this.setState({currentCity: data_parsed, coordError: false})
+        }
     }
 
     handleChange = (evt) => {
@@ -178,20 +194,25 @@ export default class Dashboard extends Component {
                     </div>
                     <form autoComplete="off" onSubmit={this.citySearch} className="w-1/2">
                         <label className="text-lg font-semibold text-slate-300">CITY</label>
-                        <input name="searchCity" type="text" autoComplete="off" className="ml-3 mr-12 my-12 bg-cyan-300 w-1/2 h-8 px-2" onChange={this.handleChange} required></input>
+                        <input name="searchCity" type="text" autoComplete="off" className="ml-3 mr-12 mt-12 bg-cyan-300 w-1/2 h-8 px-2" onChange={this.handleChange} required></input>
                         <button className="text-lg font-bold text-orange-300 hover:text-rose-500" type="submit">SEARCH</button>
                     </form>
                     <form autoComplete="off" onSubmit={this.coordSearch} className="w-1/2">
                         <label className="text-lg font-semibold text-slate-300">LAT</label>
-                        <input name="latitude" type="text" className="mx-3 my-12 bg-cyan-300 w-24 h-8 px-2" onChange={this.handleChange} required></input>
+                        <input name="latitude" type="text" className="mx-3 mt-12 bg-cyan-300 w-24 h-8 px-2" onChange={this.handleChange} required></input>
                         <label className="text-lg font-semibold text-slate-300">LON</label>
-                        <input name="longitude" type="text" className="ml-3 mr-12 my-12 bg-cyan-300 w-24 h-8 px-2" onChange={this.handleChange} required></input>
+                        <input name="longitude" type="text" className="ml-3 mr-12 mt-12 bg-cyan-300 w-24 h-8 px-2" onChange={this.handleChange} required></input>
                         <button className="text-lg font-bold text-orange-300 hover:text-rose-500" type="submit">SEARCH</button>
                     </form>
                 </div>
+                <div className='w-2/3 mx-auto my-4'>
+                    <p id="error-city" className={this.state.cityError ? "block" : "hidden"}>City not found</p>
+                    <p id="error-coord" className={this.state.coordError ? "block" : "hidden"}>Invalid coordinates</p>
+                </div>
+                {/* className={this.state.cityError ? "block" : "hidden"} */}
                 <div className='inline-block w-4/5 mx-auto my-8 text-left'>
                     {this.state.cards.map((card) => (
-                        <Card object={card} makeCurrent={this.makeCurrent} delCard={this.delCard}/>
+                        <Card object={card} makeCurrent={this.makeCurrent} delCard={this.delCard} />
                     ))}
                 </div>
             </main>

@@ -20,3 +20,21 @@
     height: 50%;
     border-radius: 5%;
 }
+
+#error-city{
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.75rem;
+    color: rgb(220 38 38);
+    float: left;
+}
+
+#error-coord{
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.75rem;
+    color: rgb(220 38 38);
+    margin-left: 6rem;
+    margin-right: 6rem;
+    float: right;
+}

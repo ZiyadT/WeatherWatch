@@ -1,4 +1,5 @@
 const City = require('../../models/City')
+const mongoose = require('mongoose')
 const request = require('request')
 
 module.exports = {
@@ -36,10 +37,9 @@ async function coordSearch(req, res){
 }
 
 async function create(req, res){
-    console.log(req.body)
     try {
-        await City.create({ id: (req.body.city.sys.id ? req.body.city.sys.id : req.body.city.id), lat: req.body.city.coord.lat, lon: req.body.city.coord.lon, user: req.user._id });
-        res.status(200).json("ok");
+        let newCity = await City.create({ lat: req.body.city.coord.lat, lon: req.body.city.coord.lon, user: req.user._id });
+        res.status(200).json(newCity);
     } catch (err) {
         res.status(400).json(err);
     }
@@ -56,9 +56,11 @@ async function getAllCoords(req, res){
 
 async function del(req, res){
     try {
-        let deleteItem = await City.deleteOne({user: req.user._id, id: (req.body.city.sys.id ? req.body.city.sys.id : req.body.city.id), lat: req.body.city.coord.lat, lon: req.body.city.coord.lon})
+        let deleteItem = await City.deleteOne({user: req.user._id, _id: mongoose.Types.ObjectId(req.body.city.mongoId)})
         res.status(200).json(deleteItem);
     } catch (err) {
         res.status(400).json(err);
     }
 }
+
+// let deleteItem = await City.deleteOne({user: req.user._id, id: (req.body.city.sys.id ? req.body.city.sys.id : req.body.city.id), lat: req.body.city.coord.lat, lon: req.body.city.coord.lon})
