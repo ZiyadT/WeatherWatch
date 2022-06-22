@@ -74,7 +74,7 @@ export default class Card extends Component {
         return(
             <div className={this.getColor()}>
                 <div className="flex justify-between">
-                    <p className="m-1 text-xl hover:text-lg" onClick={() => this.props.makeCurrent(this.props.object)}>👁️</p>
+                    <p className="m-1 text-xl hover:text-lg" onClick={() => this.props.makeCurrent(this.props.object, false)}>👁️</p>
                     <p className="m-1 text-right text-xl hover:text-lg" onClick={() => this.props.delCard(this.props.object)}>🗑️</p>
                 </div>
                 <div className="w-3/4 mx-auto text-center">

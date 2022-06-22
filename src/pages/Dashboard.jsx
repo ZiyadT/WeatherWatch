@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Card from '../components/Card'
+import Overlay from '../components/Overlay'
 import './Dashboard.css'
 
 export default class Dashboard extends Component {
@@ -11,6 +12,7 @@ export default class Dashboard extends Component {
         cityError: false,
         coordError: false,
         currentCity: null,
+        newCity: true,
         cards: []
     }
 
@@ -62,11 +64,6 @@ export default class Dashboard extends Component {
         }
     }
 
-    // let curCards = this.state.cards
-        // if (!curCards.includes(this.state.currentCity))
-        //     curCards.push(this.state.currentCity)
-        // this.setState({cards: curCards, currentCity: null})
-
     delCard = async(card) => {
         try {
             console.log(card)
@@ -87,17 +84,12 @@ export default class Dashboard extends Component {
         }
     }
 
-    // let curCards = this.state.cards
-        // const index = curCards.indexOf(card)
-        // curCards.splice(index, 1)
-        // this.setState({cards: curCards})
-
     nullCity = () => {
-        this.setState({currentCity: null})
+        this.setState({currentCity: null, newCity: true})
     }
 
-    makeCurrent = (city) => {
-        this.setState({currentCity: city})
+    makeCurrent = (city, nw = true) => {
+        this.setState({currentCity: city, newCity: nw})
     }
 
     citySearch = async (e) => {
@@ -151,47 +143,13 @@ export default class Dashboard extends Component {
             <main className='Dashboard h-screen'>
                 <div className="flex justify-between h-28 border-b-2 border-black">
                     <h1 className='text-5xl font-bold mx-24 my-auto text-slate-300'>WeatherWatch</h1>
-                    <div className='my-auto'>
-                        <h3 className='mx-24 p-2 text-slate-300 font-semibold text-lg cursor-pointer hover:text-orange-300' onClick={this.handleLogOut}>Sign Out</h3>
+                    <div className='my-auto flex'>
+                        <h3 className='mx-12 p-2 text-slate-300 font-semibold text-lg'>Hello, {this.props.user.name}</h3>
+                        <h3 className='mr-24 p-2 text-slate-300 font-semibold text-lg cursor-pointer hover:text-orange-300' onClick={this.handleLogOut}>Sign Out</h3>
                     </div>
                 </div>
                 <div className="flex">
-                    <div id="overlay" className={this.state.currentCity ? "block" : "hidden"}>
-                        <div id="inner-overlay" className="bg-amber-300">
-                            <div className="flex justify-between">
-                                <p className="mt-10 mx-10 text-4xl font-bold">{this.state.currentCity ? (this.state.currentCity.name ? this.state.currentCity.name + ', ' + this.state.currentCity.sys.country : "Unnamed") : ''}</p>
-                                <p className="mt-10 mx-10 text-4xl font-bold">{this.state.currentCity ? Math.round((this.state.currentCity.main.temp*100 - 27315)/100) : ''}°C</p>
-                            </div>
-                            <div className="flex justify-between">
-                                <p className="mx-10 mt-5 text-xl font-bold">{this.state.currentCity ? this.state.currentCity.weather[0].description : ''}</p>
-                                <p className="mx-10 mt-5 text-xl font-bold">Feels like {this.state.currentCity ? Math.round((this.state.currentCity.main.feels_like*100 - 27315)/100) : ''}°C</p>
-                            </div>
-                            <div className="w-4/5 h-1/2 mx-auto my-12">
-                                <div className="flex justify-between">
-                                    <p className="mx-10 mt-4 text-xl font-bold">Max</p>
-                                    <p className="mx-10 mt-4 text-xl font-bold">{this.state.currentCity ? Math.round((this.state.currentCity.main.temp_max*100 - 27315)/100) : ''}°C</p>
-                                </div>
-                                <div className="flex justify-between">
-                                    <p className="mx-10 mt-4 text-xl font-bold">Min</p>
-                                    <p className="mx-10 mt-4 text-xl font-bold">{this.state.currentCity ? Math.round((this.state.currentCity.main.temp_min*100 - 27315)/100) : ''}°C</p>
-                                </div>
-                                <div className="flex justify-between">
-                                    <p className="mx-10 mt-4 text-xl font-bold">Wind</p>
-                                    <p className="mx-10 mt-4 text-xl font-bold">{this.state.currentCity ? this.state.currentCity.wind.speed : ''} m/s</p>
-                                </div>
-                                <div className="flex justify-between">
-                                    <p className="mx-10 mt-4 text-xl font-bold">Humidity</p>
-                                    <p className="mx-10 mt-4 text-xl font-bold">{this.state.currentCity ? this.state.currentCity.main.humidity : ''}%</p>
-                                </div>
-                                <div className="flex justify-between">
-                                    <p className="mx-10 mt-4 text-xl font-bold">Pressure</p>
-                                    <p className="mx-10 mt-4 text-xl font-bold">{this.state.currentCity ? this.state.currentCity.main.pressure : ''} hPa</p>
-                                </div>
-                                <button className="my-10 border border-black rounded p-1 bg-cyan-600 font-semibold mx-3" onClick={this.addCard}>Add to Dashboard</button>
-                                <button className="my-10 border border-black rounded p-1 bg-red-600 font-semibold mx-3" onClick={this.nullCity}>Close</button>
-                            </div>
-                        </div>
-                    </div>
+                    {this.state.currentCity ? <Overlay currentCity={this.state.currentCity} newCity={this.state.newCity} addCard={this.addCard} nullCity={this.nullCity} /> : ""}
                     <form autoComplete="off" onSubmit={this.citySearch} className="w-1/2">
                         <label className="text-lg font-semibold text-slate-300">CITY</label>
                         <input name="searchCity" type="text" autoComplete="off" className="ml-3 mr-12 mt-12 bg-cyan-300 w-1/2 h-8 px-2" onChange={this.handleChange} required></input>
@@ -209,7 +167,6 @@ export default class Dashboard extends Component {
                     <p id="error-city" className={this.state.cityError ? "block" : "hidden"}>City not found</p>
                     <p id="error-coord" className={this.state.coordError ? "block" : "hidden"}>Invalid coordinates</p>
                 </div>
-                {/* className={this.state.cityError ? "block" : "hidden"} */}
                 <div className='inline-block w-4/5 mx-auto my-8 text-left'>
                     {this.state.cards.map((card) => (
                         <Card object={card} makeCurrent={this.makeCurrent} delCard={this.delCard} />
