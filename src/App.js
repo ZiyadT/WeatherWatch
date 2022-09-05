@@ -1,43 +1,38 @@
-import React, {Component} from 'react'
-import { Route, Routes, Navigate } from 'react-router-dom';
-import Cities from './JSON_Data/city.list.json'
+import React, {useState, useEffect} from 'react'
 import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import './App.css';
 
-export default class App extends Component {
-  state = {
-    user: null
-  }
+export default function App(props) {
+  const [user, setUser] = useState(null)
 
-  setUserInState = (incomingUserData) => {
-    this.setState({user: incomingUserData})
+  const setUserInState = (incomingUserData) => {
+    setUser(incomingUserData)
   }
   
-  componentDidMount() {
-    let token = localStorage.getItem('token')
-    if (token) {
-      const payload = JSON.parse(atob(token.split('.')[1]))
-      if (payload.exp < Date.now() / 1000) {
-        localStorage.removeItem('token')
-        token = null
-      } else {
-        this.setState({ user: payload.user })
+  useEffect(() => {
+      let token = localStorage.getItem('token')
+      if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]))
+        if (payload.exp < Date.now() / 1000) {
+          localStorage.removeItem('token')
+          token = null
+        } else {
+          setUser(payload.user)
+        }
       }
-    }
-  }
+    }, []
+  )
 
-  render() {
-    return (
+  return (
       <div className="App">
-        {this.state.user ?
-          <Dashboard setUserInState={this.setUserInState} user={this.state.user} />
+        {user ?
+          <Dashboard setUserInState={setUserInState} user={user} />
         :
-          <AuthPage setUserInState={this.setUserInState}/>
+          <AuthPage setUserInState={setUserInState}/>
         }
       </div>
     )
-  }
 }
 
 
