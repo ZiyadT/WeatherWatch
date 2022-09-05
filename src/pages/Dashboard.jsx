@@ -153,18 +153,18 @@ export default function Dashboard(props){
             <div className="block h-28 border-b-2 border-black sm:flex sm:justify-between">
                 <h1 className='text-5xl font-bold mx-24 my-auto text-slate-300'>WeatherWatch</h1>
                 <div className='my-auto flex justify-center'>
-                    <h3 className='p-2 text-slate-300 font-semibold text-lg'>Hello, {props.user.name}</h3>
-                    <h3 className='p-2 text-slate-300 font-semibold text-lg cursor-pointer hover:text-orange-300' onClick={handleLogOut}>Sign Out</h3>
+                    <h3 className='p-2 text-slate-300 font-semibold text-lg sm:mx-5'>Hello, {props.user.name}</h3>
+                    <h3 className='p-2 text-slate-300 font-semibold text-lg cursor-pointer hover:text-orange-300 sm:mx-5' onClick={handleLogOut}>Sign Out</h3>
                 </div>
             </div>
-            <div className="flex">
+            <div className="sm:flex">
                 {currentCity ? <Overlay currentCity={currentCity} newCity={newCity} addCard={addCard} nullCity={nullCity} /> : ""}
-                <form autoComplete="off" onSubmit={citySearch} className="w-1/2">
+                <form autoComplete="off" onSubmit={citySearch} className="w-4/5 mx-auto">
                     <label className="text-lg font-semibold text-slate-300">CITY</label>
                     <input name="searchCity" type="text" autoComplete="off" className="ml-3 mr-12 mt-12 bg-cyan-300 w-1/2 h-8 px-2" onChange={handleCityChange} required></input>
                     <button className="text-lg font-bold text-orange-300 hover:text-rose-500" type="submit">SEARCH</button>
                 </form>
-                <form autoComplete="off" onSubmit={coordSearch} className="w-1/2">
+                <form autoComplete="off" onSubmit={coordSearch} className="w-full mx-auto">
                     <label className="text-lg font-semibold text-slate-300">LAT</label>
                     <input name="latitude" type="text" className="mx-3 mt-12 bg-cyan-300 w-24 h-8 px-2" onChange={handleLatChange} required></input>
                     <label className="text-lg font-semibold text-slate-300">LON</label>
@@ -176,7 +176,7 @@ export default function Dashboard(props){
                 <p id="error-city" className={cityError ? "block" : "hidden"}>City not found</p>
                 <p id="error-coord" className={coordError ? "block" : "hidden"}>Invalid coordinates</p>
             </div>
-            <div className='inline-block w-4/5 mx-auto my-8 text-left'>
+            <div className='inline-block w-4/5 mx-auto my-8 sm:text-left'>
                 {cards.map((card) => (
                     <Card object={card} makeCurrent={makeCurrent} delCard={delCard} />
                 ))}
