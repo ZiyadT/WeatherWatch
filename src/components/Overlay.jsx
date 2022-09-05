@@ -1,3 +1,4 @@
+
 export default function Overlay(props){
     function getColor(){
         if (Math.round((props.currentCity.main.temp*100 - 27315)/100) > 0 && Math.round((props.currentCity.main.temp*100 - 27315)/100) < 10)
@@ -15,33 +16,33 @@ export default function Overlay(props){
         <div id="overlay">
             <div id="inner-overlay" className={getColor()}>
                 <div className="flex justify-between">
-                    <p className="mt-10 mx-10 text-4xl font-bold">{props.currentCity ? (props.currentCity.name ? props.currentCity.name + ', ' + props.currentCity.sys.country : "Unnamed") : ''}</p>
-                    <p className="mt-10 mx-10 text-4xl font-bold">{Math.round((props.currentCity.main.temp*100 - 27315)/100)}°C</p>
+                    <p className="mt-10 mx-10 text-xl font-bold sm:text-4xl">{props.currentCity ? (props.currentCity.name ? props.currentCity.name + ', ' + props.currentCity.sys.country : "Unnamed") : ''}</p>
+                    <p className="mt-10 mx-10 text-xl font-bold sm:text-4xl">{Math.round((props.currentCity.main.temp*100 - 27315)/100)}°C</p>
                 </div>
                 <div className="flex justify-between">
-                    <p className="mx-10 mt-5 text-xl font-bold">{props.currentCity.weather[0].description}</p>
-                    <p className="mx-10 mt-5 text-xl font-bold">Feels like {Math.round((props.currentCity.main.feels_like*100 - 27315)/100)}°C</p>
+                    <p className="mx-10 mt-5 text-lg font-bold sm:text-xl">{props.currentCity.weather[0].description}</p>
+                    <p className="mx-10 mt-5 text-lg font-bold sm:text-xl">Feels like {Math.round((props.currentCity.main.feels_like*100 - 27315)/100)}°C</p>
                 </div>
-                <div className="w-4/5 h-1/2 mx-auto my-12">
+                <div className="w-4/5 h-1/2 mx-auto my-6 sm:my-12">
                     <div className="flex justify-between">
-                        <p className="mx-10 mt-4 text-xl font-bold">Max</p>
-                        <p className="mx-10 mt-4 text-xl font-bold">{Math.round((props.currentCity.main.temp_max*100 - 27315)/100)}°C</p>
+                        <p className="mx-10 mt-2 font-bold sm:text-xl sm:mt-4">Max</p>
+                        <p className="mx-10 mt-2 font-bold sm:text-xl sm:mt-4">{Math.round((props.currentCity.main.temp_max*100 - 27315)/100)}°C</p>
                     </div>
                     <div className="flex justify-between">
-                        <p className="mx-10 mt-4 text-xl font-bold">Min</p>
-                        <p className="mx-10 mt-4 text-xl font-bold">{Math.round((props.currentCity.main.temp_min*100 - 27315)/100)}°C</p>
+                        <p className="mx-10 mt-2 font-bold sm:text-xl sm:mt-4">Min</p>
+                        <p className="mx-10 mt-2 font-bold sm:text-xl sm:mt-4">{Math.round((props.currentCity.main.temp_min*100 - 27315)/100)}°C</p>
                     </div>
                     <div className="flex justify-between">
-                        <p className="mx-10 mt-4 text-xl font-bold">Wind</p>
-                        <p className="mx-10 mt-4 text-xl font-bold">{props.currentCity.wind.speed} m/s</p>
+                        <p className="mx-10 mt-2 font-bold sm:text-xl sm:mt-4">Wind</p>
+                        <p className="mx-10 mt-2 font-bold sm:text-xl sm:mt-4">{props.currentCity.wind.speed} m/s</p>
                     </div>
                     <div className="flex justify-between">
-                        <p className="mx-10 mt-4 text-xl font-bold">Humidity</p>
-                        <p className="mx-10 mt-4 text-xl font-bold">{props.currentCity.main.humidity}%</p>
+                        <p className="mx-10 mt-2 font-bold sm:text-xl sm:mt-4">Humidity</p>
+                        <p className="mx-10 mt-2 font-bold sm:text-xl sm:mt-4">{props.currentCity.main.humidity}%</p>
                     </div>
                     <div className="flex justify-between">
-                        <p className="mx-10 mt-4 text-xl font-bold">Pressure</p>
-                        <p className="mx-10 mt-4 text-xl font-bold">{props.currentCity.main.pressure} hPa</p>
+                        <p className="mx-10 mt-2 font-bold sm:text-xl sm:mt-4">Pressure</p>
+                        <p className="mx-10 mt-2 font-bold sm:text-xl sm:mt-4">{props.currentCity.main.pressure} hPa</p>
                     </div>
                     <button className={props.newCity ? "my-10 border border-black rounded p-1 bg-cyan-600 font-semibold mx-3" : "hidden"} onClick={props.addCard}>Add to Dashboard</button>
                     <button className="my-10 border border-black rounded p-1 bg-red-600 font-semibold mx-3" onClick={props.nullCity}>Close</button>

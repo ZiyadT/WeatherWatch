@@ -151,7 +151,7 @@ export default function Dashboard(props){
     return(
         <main className='Dashboard h-screen'>
             <div className="block h-28 border-b-2 border-black sm:flex sm:justify-between">
-                <h1 className='text-5xl font-bold mx-24 my-auto text-slate-300'>WeatherWatch</h1>
+                <h1 className='text-5xl font-bold mx-auto my-auto text-slate-300 sm:mx-24'>WeatherWatch</h1>
                 <div className='my-auto flex justify-center'>
                     <h3 className='p-2 text-slate-300 font-semibold text-lg sm:mx-5'>Hello, {props.user.name}</h3>
                     <h3 className='p-2 text-slate-300 font-semibold text-lg cursor-pointer hover:text-orange-300 sm:mx-5' onClick={handleLogOut}>Sign Out</h3>

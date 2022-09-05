@@ -38,3 +38,10 @@
     margin-right: 6rem;
     float: right;
 }
+
+@media (max-width: 640px){
+    #inner-overlay{
+        width: 70%;
+        height: 80%;
+    }
+}
