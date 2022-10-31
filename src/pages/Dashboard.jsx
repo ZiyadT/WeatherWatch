@@ -176,7 +176,7 @@ export default function Dashboard(props){
                 <p id="error-city" className={cityError ? "block" : "hidden"}>City not found</p>
                 <p id="error-coord" className={coordError ? "block" : "hidden"}>Invalid coordinates</p>
             </div>
-            <div className='inline-block w-4/5 mx-auto my-8 sm:text-left'>
+            <div className='grid grid-cols-1 gap-y-4 w-1/2 mx-auto my-8 sm:text-left sm:grid sm:gap-x-4 sm:gap-y-2 sm:grid-cols-5 sm:w-4/5'>
                 {cards.map((card) => (
                     <Card object={card} makeCurrent={makeCurrent} delCard={delCard} />
                 ))}

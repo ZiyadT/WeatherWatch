@@ -2,15 +2,15 @@
 export default function Card(props) {
     const getColor = () => {
         if (Math.round(( props.object.main.temp*100 - 27315)/100) > 0 && Math.round(( props.object.main.temp*100 - 27315)/100) < 10)
-            return 'bg-blue-300 rounded-2xl w-52 mx-10 my-3 inline-block hover: cursor-default'
+            return 'bg-blue-300 rounded-2xl inline-block hover: cursor-default'
         else if (Math.round(( props.object.main.temp*100 - 27315)/100) >= 10 && Math.round(( props.object.main.temp*100 - 27315)/100) < 20)
-            return'bg-amber-300 rounded-2xl w-52 mx-10 my-3 inline-block hover: cursor-default'
+            return'bg-amber-300 rounded-2xl inline-block hover: cursor-default'
         else if (Math.round(( props.object.main.temp*100 - 27315)/100) >= 20 && Math.round(( props.object.main.temp*100 - 27315)/100) < 30)
-            return 'bg-orange-500 rounded-2xl w-52 mx-10 my-3 inline-block hover: cursor-default'
+            return 'bg-orange-500 rounded-2xl inline-block hover: cursor-default'
         else if (Math.round(( props.object.main.temp*100 - 27315)/100) >= 30)
-            return 'bg-red-500 rounded-2xl w-52 mx-10 my-3 inline-block hover: cursor-default'
+            return 'bg-red-500 rounded-2xl inline-block hover: cursor-default'
         else
-            return 'bg-slate-200 rounded-2xl w-52 mx-10 my-3 inline-block hover: cursor-default'
+            return 'bg-slate-200 rounded-2xl inline-block hover: cursor-default'
     }
 
     const getEmoji = () => {
