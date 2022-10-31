@@ -50,9 +50,9 @@ export default function SignUpForm(props) {
 
   const disable = password !== confirm;
   return (
-    <div className='w-1/2 my-24 mx-auto flex justify-between h-full'>
+    <div className='mt-12 mx-auto justify-between sm:flex'>
       <h1 className='ml-auto my-auto text-9xl pb-12'>🌤️</h1>
-      <div className="my-48 mr-auto w-80">
+      <div className="mx-auto w-80 sm:ml-0 sm:my-48">
         <form autoComplete="off" onSubmit={handleSubmit}>
           <div className='my-3 flex justify-between'>
             <label className='mx-4 text-lg text-slate-300 font-semibold'>Username</label>
@@ -70,7 +70,7 @@ export default function SignUpForm(props) {
             <label className='mx-4 text-lg text-slate-300 font-semibold'>Confirm</label>
             <input className='bg-cyan-300 px-2' type="password" name="confirm" value={confirm} onChange={handleChangeConfirm} required />
             </div>
-          <button className='text-lg text-slate-300 font-semibold hover:text-orange-300' type="submit" disabled={disable}>SIGN UP</button>
+          <button className='text-lg text-slate-300 font-semibold hover:text-orange-300' type="submit" disabled={disable}>Sign up</button>
         </form>
         <p className="error-message text-rose-500 font-semibold text-lg">&nbsp;{error}</p>
       </div>

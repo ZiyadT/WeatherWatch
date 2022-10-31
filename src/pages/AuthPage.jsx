@@ -6,12 +6,12 @@ export default function AuthPage(props) {
   const [showLogin, setShowLogin] = useState(true)
 
   return (
-    <main className="AuthPage">
-      <div className="flex justify-between h-28 border-b-2 border-black">
-          <h1 className='text-5xl font-bold mx-24 my-auto text-slate-300'>WeatherWatch</h1>
+    <main className="AuthPage overflow-hidden">
+      <div className="justify-between h-28 border-b-2 border-black sm:flex">
+          <h1 className='text-5xl font-bold mx-24 mt-2 text-slate-300 sm:my-auto'>WeatherWatch</h1>
         <div className='my-auto'>
           <h3
-            className='mx-24 p-2 text-slate-300 font-semibold cursor-pointer animate-bounce hover:text-orange-300'
+            className='mx-24 mt-2 p-2 text-slate-300 font-semibold cursor-pointer hover:text-orange-300 sm:mt-0'
             onClick={() => setShowLogin(!showLogin)}>
             {showLogin ? "SIGN UP" : "LOG IN"}
           </h3>

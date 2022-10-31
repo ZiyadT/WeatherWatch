@@ -40,19 +40,19 @@ export default function LoginForm(props) {
   };
 
   return (
-    <div className='w-1/2 my-24 mx-auto flex justify-between bg-transparent'>
+    <div className='mt-12 mx-auto justify-between bg-transparent sm:flex'>
       <h1 className='ml-auto my-auto text-9xl'>☀️</h1>
-      <div className="my-48 mr-auto w-80" onSubmit={handleSubmit}>
+      <div className="mx-auto w-80 sm:my-48 sm:ml-0" onSubmit={handleSubmit}>
         <form autoComplete="off">
           <div className='my-6 flex justify-between'>
-            <label className='mx-4 text-lg text-slate-300 font-semibold'>Email</label>
+            <label className='ml-4 text-lg text-slate-300 font-semibold'>Email</label>
             <input type="text" name="email" value={email} onChange={handleChangeEmail} required className='bg-cyan-300 px-2' />
           </div>
           <div className='my-6 flex justify-between'>
-            <label className='mx-4 text-lg text-slate-300 font-semibold'>Password</label>
+            <label className='ml-4 text-lg text-slate-300 font-semibold'>Password</label>
             <input type="password" name="password" value={password} onChange={handleChangePassword} required className='bg-cyan-300 px-2' />
           </div>
-          <button type="submit" className='text-lg text-slate-300 font-semibold hover:text-orange-300'>LOG IN</button>
+          <button type="submit" className='text-lg text-slate-300 font-semibold hover:text-orange-300'>Log in</button>
         </form>
       </div>
       <p className="error-message">&nbsp;{error}</p>

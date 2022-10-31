@@ -16,8 +16,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 30%;
-    height: 50%;
+    min-width: 30%;
     border-radius: 5%;
 }
 
@@ -41,7 +40,6 @@
 
 @media (max-width: 640px){
     #inner-overlay{
-        width: 70%;
-        height: 80%;
+        min-width: 70%;
     }
 }

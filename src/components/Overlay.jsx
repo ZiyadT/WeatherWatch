@@ -1,4 +1,3 @@
-
 export default function Overlay(props){
     function getColor(){
         if (Math.round((props.currentCity.main.temp*100 - 27315)/100) > 0 && Math.round((props.currentCity.main.temp*100 - 27315)/100) < 10)
@@ -16,7 +15,7 @@ export default function Overlay(props){
         <div id="overlay">
             <div id="inner-overlay" className={getColor()}>
                 <div className="flex justify-between">
-                    <p className="mt-10 mx-10 text-xl font-bold sm:text-4xl">{props.currentCity ? (props.currentCity.name ? props.currentCity.name + ', ' + props.currentCity.sys.country : "Unnamed") : ''}</p>
+                    <p id="title" className="mt-10 mx-10 text-xl font-bold sm:text-4xl">{props.currentCity.name ? props.currentCity.name + ', ' + props.currentCity.sys.country : "Unnamed"}</p>
                     <p className="mt-10 mx-10 text-xl font-bold sm:text-4xl">{Math.round((props.currentCity.main.temp*100 - 27315)/100)}°C</p>
                 </div>
                 <div className="flex justify-between">
@@ -44,8 +43,8 @@ export default function Overlay(props){
                         <p className="mx-10 mt-2 font-bold sm:text-xl sm:mt-4">Pressure</p>
                         <p className="mx-10 mt-2 font-bold sm:text-xl sm:mt-4">{props.currentCity.main.pressure} hPa</p>
                     </div>
-                    <button className={props.newCity ? "my-10 border border-black rounded p-1 bg-cyan-600 font-semibold mx-3" : "hidden"} onClick={props.addCard}>Add to Dashboard</button>
-                    <button className="my-10 border border-black rounded p-1 bg-red-600 font-semibold mx-3" onClick={props.nullCity}>Close</button>
+                    <button className={props.newCity ? "mt-10 border border-black rounded p-1 bg-cyan-600 font-semibold mx-3" : "hidden"} onClick={props.addCard}>Add to Dashboard</button>
+                    <button className="mt-10 border border-black rounded p-1 bg-red-600 font-semibold mx-3" onClick={props.nullCity}>Close</button>
                 </div>
             </div>
         </div>
